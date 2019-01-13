@@ -21,6 +21,13 @@ class Authentication
 	protected $url = null;
 
 	/**
+	 * Callback URI
+	 * 
+	 * @var null|string
+	 */
+	protected $callback = null;
+
+	/**
 	 * Your OAuth Client ID
 	 * 
 	 * @var null|integer
@@ -81,6 +88,7 @@ class Authentication
 	            'grant_type'    => 'authorization_code',
 	            'client_id'     => $this->api_client,
 	            'client_secret' => $this->api_secret,
+	            'redirect_uri'  => $this->callback,
 	            'code'          => $code,
 	        ],
 	    ]);
@@ -91,7 +99,7 @@ class Authentication
 	/**
 	 * Set the API url.
 	 * 
-	 * @param string $url
+	 * @param  string $url
 	 * @return \Hpdc\Authentication
 	 */
 	public function setUrl($url)
@@ -102,9 +110,22 @@ class Authentication
 	}
 
 	/**
+	 * Set the Callback URI
+	 *
+	 * @param  string $uri
+	 * @return \Hpdc\Authentication
+	 */
+	public function setCallback($uri)
+	{
+		$this->callback = $uri;
+
+		return $this;
+	}
+
+	/**
 	 * Set the client id.
 	 * 
-	 * @param integer $client_id
+	 * @param  integer $client_id
 	 * @return \Hpdc\Authentication
 	 */
 	public function setClient($client_id)
@@ -117,7 +138,7 @@ class Authentication
 	/**
 	 * Set the client secret.
 	 * 
-	 * @param string $client_secret
+	 * @param  string $client_secret
 	 * @return \Hpdc\Authentication
 	 */
 	public function setSecret($client_secret)

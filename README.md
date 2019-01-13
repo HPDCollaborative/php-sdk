@@ -61,6 +61,7 @@ class HomeController extends Controller
     	| you've created to store them.
     	*/
     	$this->client->setUrl(config('api.url'))
+                     ->setCallback(config('api.callback'))
     				 ->setClient(config('api.credentials.client'))
     				 ->setSecret(config('api.credentials.secret'));
     }
@@ -110,18 +111,18 @@ class HomeController extends Controller
      */
     public function callback(Request $request)
     {
-    	// code variable returned from OAuth
-    	// capture this from your request object
-    	$code = $request->code;
+        // code variable returned from OAuth
+        // capture this from your request object
+        $code = $request->code;
 
-    	// retrieve your token
-    	$response = $this->client->send($code);
+        // retrieve your token
+        $response = $this->client->send($code);
 
-    	// store the token in your session
-    	session(['api'       => $response]);
-    	session(['api-token' => $response['access_token']]);
-    
-    	return redirect('/');
+        // store the token in your session
+        session(['api'       => $response]);
+        session(['api-token' => $response['access_token']]);
+
+        return redirect('/');
     }
 }
 ```
