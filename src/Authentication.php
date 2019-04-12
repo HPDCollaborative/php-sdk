@@ -42,6 +42,13 @@ class Authentication
 	protected $api_secret = null;
 
 	/**
+	 * Scopes required for the application.
+	 * 
+	 * @var string
+	 */
+	protected $scopes = '';
+
+	/**
 	 * Instantiate the class.
 	 * 
 	 * @param \GuzzleHttp\Client $client
@@ -65,7 +72,7 @@ class Authentication
 		$query = http_build_query([
 	        'client_id'     => $this->api_client,
 	        'response_type' => 'code',
-	        'scope'         => 'create-hpds edit-hpds view-hpds',
+	        'scope'         => $this->scopes,
 	    ]);
 
 	    return $this->url . '/oauth/authorize?' . $query;
@@ -144,6 +151,19 @@ class Authentication
 	public function setSecret($client_secret)
 	{
 		$this->api_secret = $client_secret;
+
+		return $this;
+	}
+
+	/**
+	 * Set the client scopes.
+	 * 
+	 * @param  string $scopes
+	 * @return \Hpdc\Authentication
+	 */
+	public function setScopes($scopes)
+	{
+		$this->scopes = $scopes;
 
 		return $this;
 	}
