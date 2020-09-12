@@ -61,10 +61,11 @@ class Authentication
 
 	/**
 	 * Build the Authorize query.
-	 * 
+	 *
+	 * @param  $request request object from application.
 	 * @return string
 	 */
-	public function make()
+	public function make($request)
 	{
 		if (is_null($this->url) || is_null($this->api_client)) {
 			return "Ensure you set URL and Client ID before building a query.";
