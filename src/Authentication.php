@@ -62,7 +62,7 @@ class Authentication
 	/**
 	 * Build the Authorize query.
 	 *
-	 * @param  $request request object from application.
+	 * @param  object $request 
 	 * @return string
 	 */
 	public function make($request)
@@ -88,9 +88,10 @@ class Authentication
 	 * Send the token request to the API.
 	 * 
 	 * @param  string $code
+	 * @param  object $request
 	 * @return string
 	 */
-	public function send($code)
+	public function send($code, $request)
 	{
 		if (is_null($this->url) || is_null($this->api_client) || is_null($this->api_secret)) {
 			return "Ensure you set URL, Client ID and Secret before retrieving a token.";
