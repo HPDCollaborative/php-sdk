@@ -3,6 +3,7 @@
 namespace Hpdc;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\InvalidArgumentException;
 
 class Authentication
 {
@@ -69,10 +70,14 @@ class Authentication
 			return "Ensure you set URL and Client ID before building a query.";
 		}
 
+		$request->session()->put('state', $state = $this->random(40));
+
 		$query = http_build_query([
 	        'client_id'     => $this->api_client,
-	        'response_type' => 'code',
+			'redirect_uri'  => $this->callback,
+			'response_type' => 'code',
 	        'scope'         => $this->scopes,
+			'state'         => $state,
 	    ]);
 
 	    return $this->url . '/oauth/authorize?' . $query;
@@ -90,6 +95,13 @@ class Authentication
 			return "Ensure you set URL, Client ID and Secret before retrieving a token.";
 		}
 
+		$state = $request->session()->pull('state');
+
+		throw_unless(
+			strlen($state) > 0 && $state === $request->state,
+			InvalidArgumentException::class
+		);
+		
 		$response = $this->client->post($this->url . '/oauth/token', [
 	        'form_params' => [
 	            'grant_type'    => 'authorization_code',
@@ -167,4 +179,23 @@ class Authentication
 
 		return $this;
 	}
+
+	/**
+     * Generate a more truly "random" alpha-numeric string.
+     *
+     * @param  int  $length
+     * @return string
+     */
+    private function random($length = 16)
+    {
+        $string = '';
+
+        while (($len = strlen($string)) < $length) {
+			$size   = $length - $len;
+			$bytes  = random_bytes($size);
+			$string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
+        }
+
+        return $string;
+    }
 }
