@@ -74,14 +74,14 @@ class Authentication
 		$request->session()->put('state', $state = $this->random(40));
 
 		$query = http_build_query([
-	        'client_id'     => $this->api_client,
-			'redirect_uri'  => $this->callback,
-			'response_type' => 'code',
-	        'scope'         => $this->scopes,
-			'state'         => $state,
-	    ]);
+      'client_id' => $this->api_client,
+      'redirect_uri' => $this->callback,
+      'response_type' => 'code',
+      'scope' => $this->scopes,
+      'state' => $state,
+	  ]);
 
-	    return $this->url . '/oauth/authorize?' . $query;
+	  return $this->url . '/oauth/authorize?' . $query;
 	}
 
 	/**
@@ -105,16 +105,16 @@ class Authentication
 		);
 		
 		$response = $this->client->post($this->url . '/oauth/token', [
-	        'form_params' => [
-	            'grant_type'    => 'authorization_code',
-	            'client_id'     => $this->api_client,
-	            'client_secret' => $this->api_secret,
-	            'redirect_uri'  => $this->callback,
-	            'code'          => $code,
-	        ],
-	    ]);
+      'form_params' => [
+        'grant_type' => 'authorization_code',
+        'client_id' => $this->api_client,
+        'client_secret' => $this->api_secret,
+        'redirect_uri' => $this->callback,
+        'code' => $code,
+      ],
+    ]);
 
-	    return json_decode((string)$response->getBody(), true);
+	  return json_decode((string)$response->getBody(), true);
 	}
 
 	/**
@@ -183,21 +183,21 @@ class Authentication
 	}
 
 	/**
-     * Generate a more truly "random" alpha-numeric string.
-     *
-     * @param  int  $length
-     * @return string
-     */
-    private function random($length = 16)
-    {
-        $string = '';
+   * Generate a more truly "random" alpha-numeric string.
+   *
+   * @param  int  $length
+   * @return string
+   */
+  private function random($length = 16)
+  {
+    $string = '';
 
-        while (($len = strlen($string)) < $length) {
-			$size   = $length - $len;
-			$bytes  = random_bytes($size);
-			$string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
-        }
-
-        return $string;
+    while (($len = strlen($string)) < $length) {
+      $size   = $length - $len;
+      $bytes  = random_bytes($size);
+      $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
     }
+
+    return $string;
+  }
 }
