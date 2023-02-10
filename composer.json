@@ -10,12 +10,15 @@
 		}
 	],
 	"require": {
-		"php": "^8.0.2",
-		"guzzlehttp/guzzle": "^7.4"
+		"php": "^8.1",
+		"guzzlehttp/guzzle": "^7.5"
 	},
 	"autoload": {
 		"psr-4": {
 			"Hpdc\\": "src/"
 		}
+	},
+	"require-dev": {
+		"jetstreamlabs/pinte": "^1.0"
 	}
 }
